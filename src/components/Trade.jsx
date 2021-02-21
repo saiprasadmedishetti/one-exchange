@@ -65,7 +65,19 @@ function Trade() {
             >
               $ {Number(socketData.price).toLocaleString()}
             </h1>
-
+            <div className="badge">
+              Low 24hr
+              <span
+                style={{
+                  color:
+                    prev.low_24h > socketData.low_24h
+                      ? "indianred"
+                      : "mediumseagreen",
+                }}
+              >
+                $ {socketData.low_24h}
+              </span>
+            </div>
             <div className="badge">
               Volume
               <span
@@ -81,29 +93,7 @@ function Trade() {
             </div>
             <div className="badge">
               Open 24hr
-              <span
-                style={{
-                  color:
-                    prev.open_24h > socketData.open_24h
-                      ? "indianred"
-                      : "mediumseagreen",
-                }}
-              >
-                $ {socketData.open_24h}
-              </span>
-            </div>
-            <div className="badge">
-              Low 24hr
-              <span
-                style={{
-                  color:
-                    prev.low_24h > socketData.low_24h
-                      ? "indianred"
-                      : "mediumseagreen",
-                }}
-              >
-                $ {socketData.low_24h}
-              </span>
+              <span>$ {socketData.open_24h}</span>
             </div>
           </>
         )}
@@ -113,7 +103,7 @@ function Trade() {
           <thead>
             <tr>
               <th>Trade ID</th>
-              <th>Side</th>
+              {/* <th>Side</th> */}
               <th>Price</th>
               <th>Size</th>
               <th>Time</th>
@@ -123,9 +113,15 @@ function Trade() {
             {trades &&
               trades.length > 0 &&
               trades.map((trade) => (
-                <tr key={trade.trade_id}>
+                <tr
+                  key={trade.trade_id}
+                  style={{
+                    color:
+                      trade.side === "sell" ? "indianred" : "mediumseagreen",
+                  }}
+                >
                   <td>{trade.trade_id}</td>
-                  <td>{trade.side}</td>
+                  {/* <td>{trade.side}</td> */}
                   <td>$ {Number(trade.price).toFixed(3).toLocaleString()}</td>
                   <td>{trade.size}</td>
                   <td>{new Date(trade.time).toDateString()}</td>

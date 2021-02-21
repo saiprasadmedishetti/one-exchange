@@ -31,10 +31,14 @@ body {
   padding: 0.5rem 0.25rem;
   text-align: center;
   border: 1px solid #00000020;
+  border-top: 0;
+  border-left: 0;
 }
 .scroll {
-  overflow-y: auto;
+  overflow: auto;
+  box-shadow: 0px 2px 10px #00000030;
 }
+
 .stream {
   display: flex;
   flex-wrap: wrap;
@@ -58,4 +62,17 @@ body {
   font-size: 1rem;
   font-weight: 500;
   padding-left: 0.5rem;
+}
+
+@media (max-width: 450px) {
+  .price {
+    font-size: 1.8rem;
+  }
+  .container,
+  .stream {
+    padding: 1rem 0.5rem;
+  }
+  .badge {
+    font-size: 0.75rem;
+  }
 }
