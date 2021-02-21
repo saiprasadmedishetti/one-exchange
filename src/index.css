@@ -25,6 +25,9 @@ body {
 .table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.9rem;
+  /* font-weight: 500; */
+  white-space: nowrap;
 }
 .table th,
 .table td {

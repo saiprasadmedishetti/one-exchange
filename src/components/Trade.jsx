@@ -124,7 +124,7 @@ function Trade() {
                   {/* <td>{trade.side}</td> */}
                   <td>$ {Number(trade.price).toFixed(3).toLocaleString()}</td>
                   <td>{trade.size}</td>
-                  <td>{new Date(trade.time).toDateString()}</td>
+                  <td>{new Date(trade.time).toLocaleDateString()}</td>
                 </tr>
               ))}
           </tbody>
