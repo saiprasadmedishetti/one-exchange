@@ -22,7 +22,7 @@ function Trade() {
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
-      .then((data) => setTrades(data.splice(0, 15)));
+      .then((data) => setTrades(data.splice(0, 20)));
     return () => {
       setTrades([]);
     };
