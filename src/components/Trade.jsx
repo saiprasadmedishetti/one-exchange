@@ -4,12 +4,12 @@ const API_URL = "https://api.pro.coinbase.com/products/BTC-USD/trades";
 const SOCKET_URL = "wss://ws-feed.pro.coinbase.com";
 const socket = new WebSocket(SOCKET_URL);
 const sub = {
-  channels: ["ticker"],
+  channels: ["full", "ticker"],
   product_ids: ["BTC-USD"],
   type: "subscribe",
 };
 const unsub = {
-  channels: ["ticker"],
+  channels: ["full", "ticker"],
   product_ids: ["BTC-USD"],
   type: "unsubscribe",
 };
@@ -22,7 +22,7 @@ function Trade() {
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
-      .then((data) => setTrades(data));
+      .then((data) => setTrades(data.splice(0, 15)));
     return () => {
       setTrades([]);
     };
@@ -42,6 +42,15 @@ function Trade() {
           return data;
         });
         // console.log(data);
+      } else if (data.type === "match") {
+        setTrades((prev) => {
+          const uniqTrades = prev.filter(
+            (item) => item.trade_id !== data.trade_id
+          );
+          const newTrades = [data, ...uniqTrades];
+          newTrades.length = prev.length;
+          return newTrades;
+        });
       }
     };
     return () => {
@@ -57,10 +66,7 @@ function Trade() {
             <h1
               className="price"
               style={{
-                color:
-                  prev.price > socketData.price
-                    ? "indianred"
-                    : "mediumseagreen",
+                color: prev.price > socketData.price ? "indianred" : "#42a76f",
               }}
             >
               $ {Number(socketData.price).toLocaleString()}
@@ -70,12 +76,10 @@ function Trade() {
               <span
                 style={{
                   color:
-                    prev.low_24h > socketData.low_24h
-                      ? "indianred"
-                      : "mediumseagreen",
+                    prev.low_24h > socketData.low_24h ? "indianred" : "#42a76f",
                 }}
               >
-                $ {socketData.low_24h}
+                $ {Number(socketData.low_24h).toLocaleString()}
               </span>
             </div>
             <div className="badge">
@@ -85,7 +89,7 @@ function Trade() {
                   color:
                     prev.last_size > socketData.last_size
                       ? "indianred"
-                      : "mediumseagreen",
+                      : "#42a76f",
                 }}
               >
                 {socketData.last_size}
@@ -93,7 +97,16 @@ function Trade() {
             </div>
             <div className="badge">
               Open 24hr
-              <span>$ {socketData.open_24h}</span>
+              <span
+                style={{
+                  color:
+                    prev.open_24h > socketData.open_24h
+                      ? "indianred"
+                      : "#42a76f",
+                }}
+              >
+                $ {Number(socketData.open_24h).toLocaleString()}
+              </span>
             </div>
           </>
         )}
@@ -116,13 +129,12 @@ function Trade() {
                 <tr
                   key={trade.trade_id}
                   style={{
-                    color:
-                      trade.side === "sell" ? "indianred" : "mediumseagreen",
+                    color: trade.side === "sell" ? "indianred" : "#42a76f",
                   }}
                 >
                   <td>{trade.trade_id}</td>
                   {/* <td>{trade.side}</td> */}
-                  <td>$ {Number(trade.price).toFixed(3).toLocaleString()}</td>
+                  <td>$ {Number(trade.price).toLocaleString(4)}</td>
                   <td>{trade.size}</td>
                   <td>{new Date(trade.time).toLocaleDateString()}</td>
                 </tr>
