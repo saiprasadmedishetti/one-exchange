@@ -81,7 +81,11 @@ body {
   }
   .badge {
     font-size: 0.75rem;
+  }
+  .badge,
+  .price {
     flex: 1;
+    min-width: calc(50% - 0.5rem);
   }
 }
 
@@ -103,7 +107,6 @@ body {
   .price {
     min-width: 172px;
   }
-
   .badge {
     flex: 1;
   }
