@@ -138,8 +138,6 @@ function Trade() {
                   key={trade.trade_id}
                   style={{
                     color: trade.side === "sell" ? "indianred" : "#42a76f",
-                    backgroundColor:
-                      trade.side === "sell" ? "#cd5c5c10" : "#edf4ff90",
                   }}
                 >
                   <td>{trade.trade_id}</td>
