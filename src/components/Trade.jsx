@@ -62,12 +62,12 @@ function Trade() {
     <>
       <div
         className="stream"
-        style={{
-          backgroundColor:
-            prev && socketData && prev.price > socketData.price
-              ? "#cd5c5c1a"
-              : "#edf4ff",
-        }}
+        // style={{
+        //   backgroundColor:
+        //     prev && socketData && prev.price > socketData.price
+        //       ? "#cd5c5c1a"
+        //       : "#edf4ff",
+        // }}
       >
         {socketData && (
           <>
@@ -79,7 +79,13 @@ function Trade() {
             >
               $ {Number(socketData.price).toLocaleString()}
             </h1>
-            <div className="badge">
+            <div
+              className="badge"
+              style={{
+                backgroundColor:
+                  prev.low_24h > socketData.low_24h ? "#cd5c5c1a" : "#edf4ff",
+              }}
+            >
               Low 24hr
               <span
                 style={{
@@ -90,7 +96,15 @@ function Trade() {
                 $ {Number(socketData.low_24h).toLocaleString()}
               </span>
             </div>
-            <div className="badge">
+            <div
+              className="badge"
+              style={{
+                backgroundColor:
+                  prev.last_size > socketData.last_size
+                    ? "#cd5c5c1a"
+                    : "#edf4ff",
+              }}
+            >
               Volume
               <span
                 style={{
@@ -103,7 +117,13 @@ function Trade() {
                 {socketData.last_size}
               </span>
             </div>
-            <div className="badge">
+            <div
+              className="badge"
+              style={{
+                backgroundColor:
+                  prev.open_24h > socketData.open_24h ? "#cd5c5c1a" : "#edf4ff",
+              }}
+            >
               Open 24hr
               <span
                 style={{
@@ -134,17 +154,26 @@ function Trade() {
             {trades &&
               trades.length > 0 &&
               trades.map((trade) => (
-                <tr
-                  key={trade.trade_id}
-                  style={{
-                    color: trade.side === "sell" ? "indianred" : "#42a76f",
-                  }}
-                >
+                <tr key={trade.trade_id}>
                   <td>{trade.trade_id}</td>
                   {/* <td>{trade.side}</td> */}
-                  <td>$ {Number(trade.price).toLocaleString(4)}</td>
+                  <td
+                    style={{
+                      color: trade.side === "sell" ? "indianred" : "#42a76f",
+                    }}
+                    className="bold"
+                  >
+                    $ {Number(trade.price).toLocaleString(4)}
+                  </td>
                   <td>{trade.size}</td>
-                  <td>{new Date(trade.time).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(trade.time).toLocaleString([], {
+                      hour: "numeric",
+                      minute: "numeric",
+                      second: "numeric",
+                      hour12: true,
+                    })}
+                  </td>
                 </tr>
               ))}
           </tbody>
